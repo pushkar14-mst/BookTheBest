@@ -1,0 +1,96 @@
+.home-page-container {
+    display: flex;
+    margin-right: 25rem;
+    margin-left: 25rem;
+    flex-direction: column;
+}
+
+.search-section {
+    display: flex;
+    border-radius: 20px;
+    width: 100%;
+    background-color: #ffe3e0;
+    height: 500px;
+    flex-direction: column;
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+}
+
+.search-section h2 {
+    text-align: center;
+}
+
+.search-q1 {
+    text-align: center;
+}
+
+.ans-btns {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
+.search-inputs {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+
+}
+
+.search-inputs input {
+    height: 40px;
+    border-radius: 10px;
+    border: 0;
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+    font-weight: 400;
+    color: #ffe3e0;
+    font-size: 1.2rem;
+    padding: 10px;
+    font-family: 'Yeseva One';
+
+}
+
+.search-inputs input:focus,
+:focus-visible {
+    outline: none;
+}
+
+.search {
+    display: flex;
+    flex-direction: column;
+}
+
+.search-res {
+    z-index: 10;
+    margin-top: 5px;
+    width: inherit;
+    max-height: 100px;
+    overflow-y: scroll;
+    display: flex;
+    background-color: #242424;
+    color: #ffe3e0;
+}
+
+#back-btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: auto;
+    margin-top: 20px;
+}
+
+.airport-list {
+    display: flex;
+    flex-direction: column;
+    cursor: pointer;
+    /* overflow-x: hidden; */
+    margin: 5px
+}
+
+.airport-info {
+    display: flex;
+    flex-direction: row;
+    gap: 10px
+}
