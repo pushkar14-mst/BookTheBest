@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import AvailableFlights from "../../components/AvailableFlights/AvailableFlights";
 import "./HomePage.css";
 import axios from "axios";
 const HomePage = () => {
@@ -8,14 +9,22 @@ const HomePage = () => {
   const [arrivalSearch, setArrivalSearch] = useState<string>("");
   const [arrivalSearchResults, setArrivalSearchResults] = useState<any>([]);
   const [isSearching, setIsSearching] = useState<string>("");
+  const [currentDeparture, setCurrentDeparture] = useState<string>("");
+  const [currentArrival, setCurrentArrival] = useState<string>("");
+  const [departureDate, setDepartureDate] = useState<string>("");
+  console.log(departureDate);
 
-  const searchFlights = async (departure: string, arrival: string) => {
+  const searchFlights = async (
+    departure: string,
+    arrival: string,
+    date: string
+  ) => {
     await axios
       .get("http://localhost:8000/flight-search", {
         params: {
           originCode: departure,
           destinationCode: arrival,
-          dateOfDeparture: "2023-10-10",
+          dateOfDeparture: date, //yyyy-mm-dd
         },
       })
       .then((res) => {
@@ -47,9 +56,7 @@ const HomePage = () => {
   useEffect(() => {
     arrivalAirportSearch();
   }, [arrivalSearch]);
-  useEffect(() => {
-    searchFlights("LON", "SFO");
-  }, []);
+
   return (
     <>
       <h1 className="logo">Book The Best</h1>
@@ -88,6 +95,11 @@ const HomePage = () => {
                     onFocus={() => {
                       setIsSearching("departure");
                     }}
+                    value={
+                      currentDeparture.length > 0
+                        ? currentDeparture
+                        : departureSearch
+                    }
                   />
                   {isSearching.length > 0 && isSearching === "departure" && (
                     <div className="search-res">
@@ -95,7 +107,13 @@ const HomePage = () => {
                         {departureSearchResults?.map((airport: any) => {
                           return (
                             <>
-                              <div className="airport-info">
+                              <div
+                                className="airport-info"
+                                onClick={() => {
+                                  setCurrentDeparture(airport?.iataCode);
+                                  setIsSearching("");
+                                }}
+                              >
                                 <p>{airport?.iataCode}-</p>
                                 <p>{airport.name}</p>
                               </div>
@@ -116,6 +134,9 @@ const HomePage = () => {
                     onFocus={() => {
                       setIsSearching("arrival");
                     }}
+                    value={
+                      currentArrival.length > 0 ? currentArrival : arrivalSearch
+                    }
                   />
                   {isSearching.length > 0 && isSearching === "arrival" && (
                     <div className="search-res">
@@ -123,7 +144,13 @@ const HomePage = () => {
                         {arrivalSearchResults?.map((airport: any) => {
                           return (
                             <>
-                              <div className="airport-info">
+                              <div
+                                className="airport-info"
+                                onClick={() => {
+                                  setCurrentArrival(airport?.iataCode);
+                                  setIsSearching("");
+                                }}
+                              >
                                 <p>{airport?.iataCode}-</p>
                                 <p>{airport.name}</p>
                               </div>
@@ -134,17 +161,36 @@ const HomePage = () => {
                     </div>
                   )}
                 </div>
-                <input type="date" placeholder="Departure Date" />
+                <input
+                  type="date"
+                  placeholder="Departure Date"
+                  onChange={(e) => {
+                    setDepartureDate(e.target.value);
+                  }}
+                />
                 {typeOfJourney === "Return" && (
                   <input type="date" placeholder="Return Date" />
                 )}
               </div>
-              <div id="back-btn">
+
+              <div id="search-btns">
+                <button
+                  onClick={() => {
+                    searchFlights(
+                      currentDeparture,
+                      currentArrival,
+                      departureDate
+                    );
+                  }}
+                >
+                  Search
+                </button>
                 <button onClick={() => setTypeOfJourney("")}>Back</button>
               </div>
             </>
           )}
         </div>
+        <AvailableFlights />
       </div>
     </>
   );

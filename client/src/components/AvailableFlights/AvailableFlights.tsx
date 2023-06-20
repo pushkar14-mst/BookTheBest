@@ -1,5 +1,12 @@
+import "./AvailableFlights.css";
 const AvailableFlights: React.FC = () => {
-  return <></>;
+  return (
+    <>
+      <div className="flights-offers-container">
+        <div className="offers-tile"></div>
+      </div>
+    </>
+  );
 };
 
 export default AvailableFlights;

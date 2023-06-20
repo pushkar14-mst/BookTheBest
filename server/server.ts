@@ -8,7 +8,7 @@ dotenv.config();
 const app: Express = express();
 const port = 8000;
 app.use(express.json());
-app.use(cors({ origin: "http://127.0.0.1:5173" }));
+app.use(cors({ origin: "http://localhost:5173" }));
 app.use(bodyParser.urlencoded({ extended: true }));
 
 const amadeus = new Amadeus({
@@ -26,10 +26,10 @@ app.get(
         keyword: parameter,
         subType: Amadeus.location.any,
       })
-      .then(async function (response) {
+      .then(async function (response: any) {
         res.json(response.result);
       })
-      .catch(function (response) {
+      .catch(function (response: any) {
         res.json(response);
       });
   }
