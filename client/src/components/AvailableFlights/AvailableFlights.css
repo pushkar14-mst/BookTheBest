@@ -3,59 +3,98 @@
   flex-direction: column;
   margin-top: 2rem;
 }
+
 .offers-tile {
   display: flex;
+  position: relative;
   height: 200px;
   width: inherit;
   background-color: #ffe3e0;
-  border-radius: 20px;
   box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
   justify-content: center;
   align-items: center;
 }
+
+
+
+.airline-logo {
+  position: absolute;
+  left: 0;
+  top: 0;
+  background-color: #5f9ea0;
+
+  color: #ffe3e0;
+  width: 20%;
+  height: 100%;
+  text-align: center;
+}
+
+/* .flight-price img {
+  height: 190px;
+} */
+
 .one-way-offer {
   display: flex;
   flex-direction: row;
   align-items: center;
 }
+
 .arrival-info {
   display: flex;
   width: auto;
   flex-direction: column;
   margin-right: 20px;
 }
+
 .arrival-info h1 {
   font-size: 1.7rem;
+  margin-bottom: 10px;
 }
+
 .arrival-info p {
   font-size: 0.84rem;
   margin-top: 0;
 }
 
 .flight-time {
-  width: 220px;
+  display: flex;
+  width: 280px;
   border-radius: 40px;
   height: 2px;
   background-color: #242424;
+  justify-content: center;
+
 }
 
-.flight-price {
-  text-align: center;
-  background-color: #5f9ea0;
-  border-radius: 40px;
-  color: #ffe3e0;
-  width: 150px;
-}
+
+
 .departure-info {
   display: flex;
   width: auto;
   flex-direction: column;
   margin-left: 20px;
 }
+
 .departure-info h1 {
   font-size: 1.7rem;
+  margin-bottom: 10px;
+
 }
+
 .departure-info p {
   font-size: 0.84rem;
   margin-top: 0;
+}
+
+.flight-price {
+  display: flex;
+  position: absolute;
+  background-color: #5f9ea0;
+  color: #ffe3e0;
+  height: 100%;
+  width: 20%;
+  right: 0;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
 }

@@ -22,7 +22,7 @@ dotenv.config();
 const app = (0, express_1.default)();
 const port = 8000;
 app.use(express_1.default.json());
-app.use(cors({ origin: "http://localhost:5173" }));
+app.use(cors({ origin: "http://127.0.0.1:5173" }));
 app.use(bodyParser.urlencoded({ extended: true }));
 const amadeus = new Amadeus({
     clientId: process.env.NODE_AMADEUS_API_KEY,
