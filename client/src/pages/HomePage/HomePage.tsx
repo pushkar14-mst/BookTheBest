@@ -12,6 +12,8 @@ const HomePage = () => {
   const [currentDeparture, setCurrentDeparture] = useState<string>("");
   const [currentArrival, setCurrentArrival] = useState<string>("");
   const [departureDate, setDepartureDate] = useState<string>("");
+  const [searchResults, setSearchResults] = useState<any>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   console.log(departureDate);
 
   const searchFlights = async (
@@ -29,6 +31,8 @@ const HomePage = () => {
       })
       .then((res) => {
         console.log(res.data);
+        setIsLoading(false);
+        setSearchResults(res.data.data);
       });
   };
 
@@ -176,6 +180,7 @@ const HomePage = () => {
               <div id="search-btns">
                 <button
                   onClick={() => {
+                    setIsLoading(true);
                     searchFlights(
                       currentDeparture,
                       currentArrival,
@@ -190,7 +195,12 @@ const HomePage = () => {
             </>
           )}
         </div>
-        <AvailableFlights />
+        <AvailableFlights
+          flights={searchResults}
+          isLoading={isLoading}
+          departure={currentDeparture}
+          arrival={currentArrival}
+        />
       </div>
     </>
   );
