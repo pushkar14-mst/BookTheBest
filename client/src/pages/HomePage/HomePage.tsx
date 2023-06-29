@@ -12,14 +12,20 @@ const HomePage = () => {
   const [currentDeparture, setCurrentDeparture] = useState<string>("");
   const [currentArrival, setCurrentArrival] = useState<string>("");
   const [departureDate, setDepartureDate] = useState<string>("");
+  const [journeyClass, setJourneyClass] = useState<string>("Economy");
+  const [adults, setAdults] = useState<string>("");
+  const [children, setChildren] = useState<string>("");
   const [searchResults, setSearchResults] = useState<any>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  console.log(departureDate);
+  console.log(journeyClass);
 
   const searchFlights = async (
     departure: string,
     arrival: string,
-    date: string
+    date: string,
+    journeyClass: string,
+    adults: string,
+    children: string
   ) => {
     await axios
       .get("http://localhost:8000/flight-search", {
@@ -27,6 +33,9 @@ const HomePage = () => {
           originCode: departure,
           destinationCode: arrival,
           dateOfDeparture: date, //yyyy-mm-dd
+          journeyClass: journeyClass,
+          adults: adults.length > 0 ? adults : "1",
+          children: children.length > 0 ? children : "0",
         },
       })
       .then((res) => {
@@ -172,6 +181,34 @@ const HomePage = () => {
                     setDepartureDate(e.target.value);
                   }}
                 />
+                <select
+                  name="journey-class"
+                  id="journey-class"
+                  value={journeyClass}
+                  onChange={(e) => setJourneyClass(e.target.value)}
+                >
+                  <option value="FIRST">First</option>
+                  <option value="BUSINESS">Business</option>
+                  <option value="PREMIUM_ECONOMY">Premium Economy</option>
+                  <option value="ECONOMY">Economy</option>
+                </select>
+                <input
+                  type="Number"
+                  placeholder="No. Of Adults"
+                  value={adults}
+                  min={1}
+                  max={6}
+                  onChange={(e) => setAdults(e.target.value)}
+                />
+                <input
+                  type="Number"
+                  placeholder="No. Of Children"
+                  value={children}
+                  min={0}
+                  max={6}
+                  onChange={(e) => setChildren(e.target.value)}
+                />
+
                 {typeOfJourney === "Return" && (
                   <input type="date" placeholder="Return Date" />
                 )}
@@ -184,13 +221,29 @@ const HomePage = () => {
                     searchFlights(
                       currentDeparture,
                       currentArrival,
-                      departureDate
+                      departureDate,
+                      journeyClass,
+                      adults,
+                      children
                     );
                   }}
                 >
                   Search
                 </button>
                 <button onClick={() => setTypeOfJourney("")}>Back</button>
+                <button
+                  onClick={() => {
+                    setArrivalSearch("");
+                    setDepartureSearch("");
+                    setCurrentArrival("");
+                    setCurrentDeparture("");
+                    setDepartureDate("");
+                    setAdults("");
+                    setChildren("");
+                  }}
+                >
+                  Clear
+                </button>
               </div>
             </>
           )}

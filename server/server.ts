@@ -40,6 +40,9 @@ app.get("/flight-search", (req: Request, res: Response) => {
   const originCode = req.query.originCode;
   const destinationCode = req.query.destinationCode;
   const dateOfDeparture = req.query.dateOfDeparture;
+  const journeyClass = req.query.journeyClass;
+  const adults = req.query.adults;
+  const children = req.query.children;
   // Find the cheapest flights
   try {
     amadeus.shopping.flightOffersSearch
@@ -47,8 +50,10 @@ app.get("/flight-search", (req: Request, res: Response) => {
         originLocationCode: originCode,
         destinationLocationCode: destinationCode,
         departureDate: dateOfDeparture,
-        adults: "1",
-        max: "7",
+        adults: adults,
+        children: children,
+        travelClass: journeyClass,
+        max: "70",
       })
       .then(function (response: any) {
         res.json(response.result);

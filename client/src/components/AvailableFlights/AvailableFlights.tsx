@@ -102,6 +102,14 @@ const AvailableFlights: React.FC<IProps> = ({
                         flightOffer.price.total
                       }`}
                   </h1>
+                  <p>
+                    {flightOffer.travelerPricings[0].fareDetailsBySegment[0].cabin
+                      .charAt(0)
+                      .toUpperCase() +
+                      flightOffer.travelerPricings[0].fareDetailsBySegment[0].cabin
+                        .slice(1)
+                        .toLowerCase()}
+                  </p>
                 </div>
               </div>
             );
