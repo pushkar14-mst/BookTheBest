@@ -17,8 +17,7 @@ const HomePage = () => {
   const [children, setChildren] = useState<string>("");
   const [searchResults, setSearchResults] = useState<any>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  console.log(journeyClass);
-
+  const [flightTypes, setFlightTypes] = useState<any>();
   const searchFlights = async (
     departure: string,
     arrival: string,
@@ -42,6 +41,7 @@ const HomePage = () => {
         console.log(res.data);
         setIsLoading(false);
         setSearchResults(res.data.data);
+        setFlightTypes(res.data.dictionaries?.aircraft);
       });
   };
 
@@ -253,6 +253,7 @@ const HomePage = () => {
           isLoading={isLoading}
           departure={currentDeparture}
           arrival={currentArrival}
+          flightTypes={flightTypes}
         />
       </div>
     </>
