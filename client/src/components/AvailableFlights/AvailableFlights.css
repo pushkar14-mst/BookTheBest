@@ -117,6 +117,7 @@
 
 .offer-expansion {
   display: flex;
+  position: relative;
   width: inherit;
   background-color: #c8d8e4;
   color: #2b6777;
@@ -161,4 +162,10 @@
 
 .flight-time-segment-wise h1 {
   text-align: center;
+}
+
+
+#select-flight-btn {
+  position: absolute;
+  bottom: 10px;
 }

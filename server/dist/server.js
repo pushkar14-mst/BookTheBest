@@ -22,7 +22,7 @@ dotenv.config();
 const app = (0, express_1.default)();
 const port = 8000;
 app.use(express_1.default.json());
-app.use(cors({ origin: "http://127.0.0.1:5173" }));
+app.use(cors({ origin: "http://localhost:5173" }));
 app.use(bodyParser.urlencoded({ extended: true }));
 const amadeus = new Amadeus({
     clientId: process.env.NODE_AMADEUS_API_KEY,
@@ -46,7 +46,6 @@ app.get(`/city-and-airport-search/:parameter`, (req, res) => {
     });
 });
 app.get("/flight-search", (req, res) => {
-    console.log(req.query);
     const originCode = req.query.originCode;
     const destinationCode = req.query.destinationCode;
     const dateOfDeparture = req.query.dateOfDeparture;
@@ -75,6 +74,28 @@ app.get("/flight-search", (req, res) => {
     catch (error) {
         throw Error(error);
     }
+});
+app.post("/flightprice", function (req, res) {
+    return __awaiter(this, void 0, void 0, function* () {
+        res.json(req.body);
+        let inputFlight = req.body;
+        const responsePricing = yield amadeus.shopping.flightOffers.pricing
+            .post(JSON.stringify({
+            data: {
+                type: "flight-offers-pricing",
+                flightOffers: inputFlight,
+            },
+        }))
+            .catch((err) => console.log(err));
+        try {
+            console.log(JSON.parse(responsePricing.body));
+            res.json(JSON.parse(responsePricing.body));
+        }
+        catch (err) {
+            console.log(err);
+            res.json(err);
+        }
+    });
 });
 app.listen(port, () => {
     console.log(`⚡️[server]: Server is running at http://127.0.0.1:8000`);

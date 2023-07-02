@@ -7,6 +7,10 @@ import FlightTakeoffIcon from "@mui/icons-material/FlightTakeoff";
 import FlightLandIcon from "@mui/icons-material/FlightLand";
 import Tooltip from "@mui/material/Tooltip";
 import Skeleton from "@mui/material/Skeleton";
+import { useDispatch } from "react-redux";
+import { flightsActions } from "../../store/flights-offers";
+import { Link } from "react-router-dom";
+import axios from "axios";
 
 interface IProps {
   flights: [];
@@ -45,6 +49,11 @@ const AvailableFlights: React.FC<IProps> = ({
 
   const [isExpanded, setIsExpanded] = useState<boolean>(false);
   const [flightOfferId, setFlightOfferId] = useState<string>("");
+  const dispatch = useDispatch();
+
+  const getFinalPrice = async (flightObj: any) => {
+    await axios.post("http://localhost:8000/flightprice", { flightObj });
+  };
   return (
     <>
       <div className="flights-offers-container">
@@ -232,6 +241,18 @@ const AvailableFlights: React.FC<IProps> = ({
                         )}
                       </div>
                     </div>
+                    <Link to={"/flight-overview"} id="select-flight-btn">
+                      <button
+                        onClick={() => {
+                          getFinalPrice(flightOffer);
+                          dispatch(
+                            flightsActions.setFlight({ flight: flightOffer })
+                          );
+                        }}
+                      >
+                        Select
+                      </button>
+                    </Link>
                   </div>
                 )}
               </>

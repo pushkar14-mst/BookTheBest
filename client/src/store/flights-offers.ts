@@ -1,18 +1,19 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 interface flightDetails {
-  flights: any[];
+  selectedFlight: any[];
 }
 
 const initialState: flightDetails = {
-  flights: [],
+  selectedFlight: [],
 };
 const flightsOffersSlice = createSlice({
-  name: "flights-offers",
+  name: "flightOffers",
   initialState: initialState,
   reducers: {
-    getFlights(state, action: PayloadAction<any>) {
-      state.flights.push(action.payload);
+    setFlight(state, action: PayloadAction<any>) {
+      state.selectedFlight = [action.payload.flight];
+      console.log(state.selectedFlight);
     },
   },
 });

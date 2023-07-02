@@ -8,7 +8,7 @@ dotenv.config();
 const app: Express = express();
 const port = 8000;
 app.use(express.json());
-app.use(cors({ origin: "http://127.0.0.1:5173" }));
+app.use(cors({ origin: "http://localhost:5173" }));
 app.use(bodyParser.urlencoded({ extended: true }));
 
 const amadeus = new Amadeus({
@@ -35,8 +35,6 @@ app.get(
   }
 );
 app.get("/flight-search", (req: Request, res: Response) => {
-  console.log(req.query);
-
   const originCode = req.query.originCode;
   const destinationCode = req.query.destinationCode;
   const dateOfDeparture = req.query.dateOfDeparture;
@@ -63,6 +61,29 @@ app.get("/flight-search", (req: Request, res: Response) => {
       });
   } catch (error: any) {
     throw Error(error);
+  }
+});
+app.post("/flightprice", async function (req, res) {
+  res.json(req.body);
+  let inputFlight = req.body;
+
+  const responsePricing = await amadeus.shopping.flightOffers.pricing
+    .post(
+      JSON.stringify({
+        data: {
+          type: "flight-offers-pricing",
+          flightOffers: inputFlight,
+        },
+      })
+    )
+    .catch((err: any) => console.log(err));
+  try {
+    console.log(JSON.parse(responsePricing.body));
+    res.json(JSON.parse(responsePricing.body));
+  } catch (err: any) {
+    console.log(err);
+
+    res.json(err);
   }
 });
 app.listen(port, () => {
