@@ -52,7 +52,13 @@ const AvailableFlights: React.FC<IProps> = ({
   const dispatch = useDispatch();
 
   const getFinalPrice = async (flightObj: any) => {
-    await axios.post("http://localhost:8000/flightprice", { flightObj });
+    await axios
+      .post("http://localhost:8000/flightprice", {
+        flightObj: flightObj,
+      })
+      .then((res) => {
+        console.log(res.data?.data);
+      });
   };
   return (
     <>

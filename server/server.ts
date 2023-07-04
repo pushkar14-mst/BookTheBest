@@ -64,27 +64,28 @@ app.get("/flight-search", (req: Request, res: Response) => {
   }
 });
 app.post("/flightprice", async function (req, res) {
-  res.json(req.body);
-  let inputFlight = req.body;
+  //res.json(req.body);
+  let inputFlight = req.body.flightObj;
 
   const responsePricing = await amadeus.shopping.flightOffers.pricing
     .post(
       JSON.stringify({
         data: {
           type: "flight-offers-pricing",
-          flightOffers: inputFlight,
+          flightOffers: [inputFlight],
         },
       })
     )
-    .catch((err: any) => console.log(err));
-  try {
-    console.log(JSON.parse(responsePricing.body));
-    res.json(JSON.parse(responsePricing.body));
-  } catch (err: any) {
-    console.log(err);
-
-    res.json(err);
-  }
+    .then((response: any) => {
+      res.json(response.result);
+    })
+    .catch((err: any) => console.log("error:", err));
+  // try {
+  //   console.log(JSON.parse(responsePricing.body));
+  //   res.json(JSON.parse(responsePricing.body));
+  // } catch (err: any) {
+  //   console.log(err);
+  // }
 });
 app.listen(port, () => {
   console.log(`⚡️[server]: Server is running at http://127.0.0.1:8000`);

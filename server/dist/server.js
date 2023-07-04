@@ -77,24 +77,25 @@ app.get("/flight-search", (req, res) => {
 });
 app.post("/flightprice", function (req, res) {
     return __awaiter(this, void 0, void 0, function* () {
-        res.json(req.body);
-        let inputFlight = req.body;
+        //res.json(req.body);
+        let inputFlight = req.body.flightObj;
         const responsePricing = yield amadeus.shopping.flightOffers.pricing
             .post(JSON.stringify({
             data: {
                 type: "flight-offers-pricing",
-                flightOffers: inputFlight,
+                flightOffers: [inputFlight],
             },
         }))
-            .catch((err) => console.log(err));
-        try {
-            console.log(JSON.parse(responsePricing.body));
-            res.json(JSON.parse(responsePricing.body));
-        }
-        catch (err) {
-            console.log(err);
-            res.json(err);
-        }
+            .then((response) => {
+            res.json(response.result);
+        })
+            .catch((err) => console.log("error:", err));
+        // try {
+        //   console.log(JSON.parse(responsePricing.body));
+        //   res.json(JSON.parse(responsePricing.body));
+        // } catch (err: any) {
+        //   console.log(err);
+        // }
     });
 });
 app.listen(port, () => {

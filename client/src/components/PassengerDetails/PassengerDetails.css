@@ -1,0 +1,42 @@
+#passenger-details {
+    margin-top: 60px;
+}
+
+.passenger-details-container {
+    display: flex;
+    margin-left: 25rem;
+    margin-right: 25rem;
+    background-color: #c8d8e4;
+    flex-direction: column;
+    padding: 0.5rem;
+    border-radius: 20px;
+}
+
+.passenger-details-inputs {
+    display: flex;
+    gap: 10px;
+}
+
+.passenger-details-inputs input {
+    height: 40px;
+    min-width: 200px;
+    border-radius: 10px;
+    border: 0;
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+    font-weight: 400;
+    background-color: inherit;
+    font-size: 1.2rem;
+    padding: 10px;
+    font-family: "Yeseva One";
+    color: #2b6777;
+
+}
+
+.passenger-details-inputs input::placeholder {
+    color: #2b6777;
+}
+
+.passenger-details-inputs input:focus,
+:focus-visible {
+    outline: none;
+}

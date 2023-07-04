@@ -1,5 +1,7 @@
 import { useSelector } from "react-redux";
+import { Link } from "@mui/material";
 import "./FlightOverviewPage.css";
+import PassengerDetails from "../../components/PassengerDetails/PassengerDetails";
 
 const FlightOverviewPage = () => {
   const flight = useSelector((state: any) => state.flightOffers);
@@ -93,7 +95,11 @@ const FlightOverviewPage = () => {
             }`}
           </h1>
         </div>
+        <a href="#passenger-details">
+          <button>Proceed To Enter Passenger Details</button>
+        </a>
       </div>
+      <PassengerDetails />
     </>
   );
 };
