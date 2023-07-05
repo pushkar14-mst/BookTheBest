@@ -27,8 +27,6 @@ const AvailableFlights: React.FC<IProps> = ({
   arrival,
   flightTypes,
 }: IProps) => {
-  console.log(flightTypes);
-
   var currency_symbols: any = {
     USD: "$", // US Dollar
     EUR: "€", // Euro
@@ -50,14 +48,15 @@ const AvailableFlights: React.FC<IProps> = ({
   const [isExpanded, setIsExpanded] = useState<boolean>(false);
   const [flightOfferId, setFlightOfferId] = useState<string>("");
   const dispatch = useDispatch();
-
   const getFinalPrice = async (flightObj: any) => {
     await axios
       .post("http://localhost:8000/flightprice", {
         flightObj: flightObj,
       })
       .then((res) => {
-        console.log(res.data?.data);
+        dispatch(
+          flightsActions.setFlightPricing({ flightPricing: res.data?.data })
+        );
       });
   };
   return (
@@ -252,7 +251,9 @@ const AvailableFlights: React.FC<IProps> = ({
                         onClick={() => {
                           getFinalPrice(flightOffer);
                           dispatch(
-                            flightsActions.setFlight({ flight: flightOffer })
+                            flightsActions.setFlight({
+                              flight: flightOffer,
+                            })
                           );
                         }}
                       >

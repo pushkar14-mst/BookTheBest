@@ -2,10 +2,12 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 interface flightDetails {
   selectedFlight: any[];
+  flightPricing: any[];
 }
 
 const initialState: flightDetails = {
   selectedFlight: [],
+  flightPricing: [],
 };
 const flightsOffersSlice = createSlice({
   name: "flightOffers",
@@ -13,7 +15,10 @@ const flightsOffersSlice = createSlice({
   reducers: {
     setFlight(state, action: PayloadAction<any>) {
       state.selectedFlight = [action.payload.flight];
-      console.log(state.selectedFlight);
+    },
+    setFlightPricing(state, action: PayloadAction<any>) {
+      state.flightPricing = [action.payload.flightPricing];
+      console.log(state.flightPricing);
     },
   },
 });

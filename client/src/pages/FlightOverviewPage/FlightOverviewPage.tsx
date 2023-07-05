@@ -1,11 +1,12 @@
+import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
-import { Link } from "@mui/material";
 import "./FlightOverviewPage.css";
 import PassengerDetails from "../../components/PassengerDetails/PassengerDetails";
 
 const FlightOverviewPage = () => {
   const flight = useSelector((state: any) => state.flightOffers);
-  console.log(flight.selectedFlight);
+  console.log(flight.flightPricing[0]);
+
   var currency_symbols: any = {
     USD: "$", // US Dollar
     EUR: "€", // Euro
@@ -86,13 +87,16 @@ const FlightOverviewPage = () => {
         )}
         <div className="fare-breakdown">
           <h1>
-            {`Total Fare: ${
-              flight.selectedFlight[0]?.travelerPricings[0]?.price?.total
-            } ${
-              currency_symbols[
-                flight.selectedFlight[0]?.travelerPricings[0]?.price?.currency
-              ]
-            }`}
+            {flight.flightPricing[0]?.price
+              ? `Total Fare: ${flight.flightPricing[0]?.price?.total}`
+              : `Total Fare: ${
+                  flight.selectedFlight[0]?.travelerPricings[0]?.price?.total
+                } ${
+                  currency_symbols[
+                    flight.selectedFlight[0]?.travelerPricings[0]?.price
+                      ?.currency
+                  ]
+                }`}
           </h1>
         </div>
         <a href="#passenger-details">
