@@ -24,6 +24,7 @@ const port = 8000;
 app.use(express_1.default.json());
 app.use(cors({ origin: "http://localhost:5173" }));
 app.use(bodyParser.urlencoded({ extended: true }));
+let confirmOrder;
 const amadeus = new Amadeus({
     clientId: process.env.NODE_AMADEUS_API_KEY,
     clientSecret: process.env.NODE_AMADEUS_API_SECRET_KEY,
@@ -79,7 +80,7 @@ app.post("/flightprice", function (req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         //res.json(req.body);
         let inputFlight = req.body.flightObj;
-        const responsePricing = yield amadeus.shopping.flightOffers.pricing
+        yield amadeus.shopping.flightOffers.pricing
             .post(JSON.stringify({
             data: {
                 type: "flight-offers-pricing",
@@ -90,14 +91,56 @@ app.post("/flightprice", function (req, res) {
             res.json(response.result);
         })
             .catch((err) => console.log("error:", err));
-        // try {
-        //   console.log(JSON.parse(responsePricing.body));
-        //   res.json(JSON.parse(responsePricing.body));
-        // } catch (err: any) {
-        //   console.log(err);
-        // }
     });
 });
+app.post("/flight-create-order", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    let inputFlight = req.body.flightObj;
+    yield amadeus.booking.flightOrders
+        .post(JSON.stringify({
+        data: {
+            type: "flight-order",
+            flightOffers: [inputFlight],
+            travelers: [
+                {
+                    id: "1",
+                    dateOfBirth: "2012-10-11",
+                    gender: "FEMALE",
+                    contact: {
+                        emailAddress: "jorge.gonzales833@telefonica.es",
+                        phones: [
+                            {
+                                deviceType: "MOBILE",
+                                countryCallingCode: "34",
+                                number: "480080076",
+                            },
+                        ],
+                    },
+                    documents: [
+                        {
+                            documentType: "PASSPORT",
+                            number: "012345678",
+                            expiryDate: "2009-04-14",
+                            issuanceCountry: "GB",
+                            nationality: "GB",
+                            holder: true,
+                        },
+                    ],
+                    name: {
+                        firstName: "ADRIANA",
+                        lastName: "GONZALES",
+                    },
+                },
+            ],
+        },
+    }))
+        .then(function (response) {
+        console.log(response.result);
+        res.json(JSON.stringify(response.result));
+    })
+        .catch(function (responseError) {
+        console.log(responseError);
+    });
+}));
 app.listen(port, () => {
     console.log(`⚡️[server]: Server is running at http://127.0.0.1:8000`);
 });
