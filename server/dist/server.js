@@ -53,6 +53,7 @@ app.get("/flight-search", (req, res) => {
     const journeyClass = req.query.journeyClass;
     const adults = req.query.adults;
     const children = req.query.children;
+    const currencyCode = req.query.currencyCode;
     // Find the cheapest flights
     try {
         amadeus.shopping.flightOffersSearch
@@ -64,6 +65,7 @@ app.get("/flight-search", (req, res) => {
             children: children,
             travelClass: journeyClass,
             max: "70",
+            currencyCode: currencyCode,
         })
             .then(function (response) {
             res.json(response.result);

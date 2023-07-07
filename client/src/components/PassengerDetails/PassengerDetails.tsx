@@ -25,16 +25,29 @@ const PassengerDetails = () => {
               <option value="MALE">Male</option>
               <option value="FEMALE">Female</option>
             </select>
-            <div className="mobile">
-              <p>Mobile</p>
-              {/* <label htmlFor="ctr">Mobile</label> */}
-              <input type="text" placeholder="+CTR" id="ctr" name="ctr" />
-              <input
-                type="tel"
-                placeholder="Your 10 digit Mobile No."
-                name="tel"
-              />
-            </div>
+
+            <label htmlFor="ctr">Country Code</label>
+            <input type="text" placeholder="+CTR" id="ctr" name="ctr" />
+            <label htmlFor="tel">Mobile</label>
+            <input
+              type="tel"
+              placeholder="Your 10 digit Mobile No."
+              name="tel"
+            />
+          </div>
+          <h2 style={{ textAlign: "center" }}>Passport Details</h2>
+          <p style={{ textAlign: "center", marginTop: "0" }}>
+            *Please Enter information as mentioned in your Passport
+          </p>
+          <div className="passport-details">
+            <label htmlFor="passport-no">Passport No.</label>
+            <input type="text" placeholder="Passport No" name="passportNo" />
+            <label htmlFor="passport-expiry">Expiry Date</label>
+            <input type="date" />
+            <label htmlFor="issuance">Issuance Contry</label>
+            <input type="text" placeholder="Issuance Country" />
+            <label htmlFor="nationality">Nationality</label>
+            <input type="text" placeholder="Nationality" />
           </div>
         </div>
       </section>

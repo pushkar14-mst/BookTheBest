@@ -13,18 +13,21 @@ const HomePage = () => {
   const [currentArrival, setCurrentArrival] = useState<string>("");
   const [departureDate, setDepartureDate] = useState<string>("");
   const [journeyClass, setJourneyClass] = useState<string>("Economy");
+  const [currency, setCurrency] = useState<string>("USD");
   const [adults, setAdults] = useState<string>("");
   const [children, setChildren] = useState<string>("");
   const [searchResults, setSearchResults] = useState<any>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [flightTypes, setFlightTypes] = useState<any>();
+
   const searchFlights = async (
     departure: string,
     arrival: string,
     date: string,
     journeyClass: string,
     adults: string,
-    children: string
+    children: string,
+    currency: string
   ) => {
     await axios
       .get("http://localhost:8000/flight-search", {
@@ -35,6 +38,7 @@ const HomePage = () => {
           journeyClass: journeyClass,
           adults: adults.length > 0 ? adults : "1",
           children: children.length > 0 ? children : "0",
+          currencyCode: currency.length > 0 ? currency : "USD",
         },
       })
       .then((res) => {
@@ -208,7 +212,19 @@ const HomePage = () => {
                   max={6}
                   onChange={(e) => setChildren(e.target.value)}
                 />
-
+                <select
+                  name=""
+                  id=""
+                  value={currency}
+                  onChange={(e) => {
+                    setCurrency(e.target.value);
+                  }}
+                >
+                  <option value="">Select Currency</option>
+                  <option value="EUR">EUR</option>
+                  <option value="INR">INR</option>
+                  <option value="USD">USD</option>
+                </select>
                 {typeOfJourney === "Return" && (
                   <input type="date" placeholder="Return Date" />
                 )}
@@ -224,7 +240,8 @@ const HomePage = () => {
                       departureDate,
                       journeyClass,
                       adults,
-                      children
+                      children,
+                      currency
                     );
                   }}
                 >

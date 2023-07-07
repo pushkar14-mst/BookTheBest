@@ -135,7 +135,7 @@ const AvailableFlights: React.FC<IProps> = ({
                     }}
                   />
                   <div className="flight-price">
-                    <h1>
+                    <h1 style={{ fontSize: "2.2rem" }}>
                       {currency_symbols[flightOffer.price.currency] !==
                         undefined &&
                         `${currency_symbols[flightOffer.price.currency]}${
