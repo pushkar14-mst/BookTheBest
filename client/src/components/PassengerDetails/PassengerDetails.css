@@ -1,5 +1,5 @@
 #passenger-details {
-    margin-top: 60px;
+    position: relative;
 }
 
 .passenger-details-container {
@@ -100,4 +100,11 @@
 .passport-details input:focus,
 :focus-visible {
     outline: none;
+}
+
+.submit-paxinfo {
+    position: absolute;
+    margin-top: 30px;
+    left: 50%;
+    padding-bottom: 40px;
 }
