@@ -85,41 +85,43 @@ app.post("/flightprice", async function (req: Request, res: Response) {
 });
 
 app.post("/flight-create-order", async (req: Request, res: Response) => {
-  let inputFlight = req.body.flightObj;
+  //let inputFlight = req.body.flightObj;
+  let paxDetails = req.body.paxDetails;
+
   await amadeus.booking.flightOrders
     .post(
       JSON.stringify({
         data: {
           type: "flight-order",
-          flightOffers: [inputFlight],
+          flightOffers: inputFlight,
           travelers: [
             {
               id: "1",
-              dateOfBirth: "2012-10-11",
-              gender: "FEMALE",
+              dateOfBirth: paxDetails.dob,
+              gender: paxDetails.gender,
               contact: {
-                emailAddress: "jorge.gonzales833@telefonica.es",
+                emailAddress: paxDetails.email,
                 phones: [
                   {
                     deviceType: "MOBILE",
-                    countryCallingCode: "34",
-                    number: "480080076",
+                    countryCallingCode: paxDetails.ctrCode,
+                    number: paxDetails.mobile,
                   },
                 ],
               },
               documents: [
                 {
                   documentType: "PASSPORT",
-                  number: "012345678",
-                  expiryDate: "2009-04-14",
-                  issuanceCountry: "GB",
-                  nationality: "GB",
+                  number: paxDetails.passport,
+                  expiryDate: paxDetails.passportExpiry,
+                  issuanceCountry: paxDetails.issue,
+                  nationality: paxDetails.nationality,
                   holder: true,
                 },
               ],
               name: {
-                firstName: "ADRIANA",
-                lastName: "GONZALES",
+                firstName: paxDetails.fname,
+                lastName: paxDetails.lname,
               },
             },
           ],
@@ -128,7 +130,7 @@ app.post("/flight-create-order", async (req: Request, res: Response) => {
     )
     .then(function (response: any) {
       console.log(response.result);
-      res.json(JSON.stringify(response.result));
+      res.json(response.result);
     })
     .catch(function (responseError: any) {
       console.log(responseError);

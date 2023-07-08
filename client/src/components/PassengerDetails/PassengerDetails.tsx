@@ -1,7 +1,13 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./PassengerDetails.css";
 import axios from "axios";
+import { useSelector } from "react-redux";
 const PassengerDetails = () => {
+  const flightObj = useSelector(
+    (state: any) => state.flightOffers.selectedFlight
+  );
+  console.log(flightObj);
+
   const [paxDetails, setPaxDetails] = useState<any>({
     fName: "",
     lName: "",
@@ -18,10 +24,16 @@ const PassengerDetails = () => {
   console.log("passenger Details", paxDetails);
 
   const sendPaxDetails = async () => {
-    await axios.post("http://localhost:8000/flight-create-order", {
-      paxDetails: paxDetails,
-    });
+    await axios
+      .post("http://localhost:8000/flight-create-order", {
+        paxDetails: paxDetails,
+        flightObj: flightObj,
+      })
+      .then((res) => {
+        console.log(res.data);
+      });
   };
+
   return (
     <>
       <section id="passenger-details">
@@ -149,9 +161,9 @@ const PassengerDetails = () => {
             />
           </div>
         </div>
-        <div className="submit-paxinfo">
-          <button>Submit</button>
-        </div>
+        {/* <div className="submit-paxinfo">
+          <button onClick={() => sendPaxDetails()}>Submit</button>
+        </div> */}
       </section>
     </>
   );
