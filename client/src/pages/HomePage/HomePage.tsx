@@ -20,6 +20,25 @@ const HomePage = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [flightTypes, setFlightTypes] = useState<any>();
 
+  const addProduct = async () => {
+    let product = {
+      id: "p1",
+      name: "Adidas Tshirt",
+      description: "Cool Tshirt with quick dry tech",
+      price: 1290,
+    };
+    await axios.post(
+      "http://localhost:5278/api/Product",
+      {
+        product: product,
+      },
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+  };
   const searchFlights = async (
     departure: string,
     arrival: string,
@@ -73,7 +92,15 @@ const HomePage = () => {
   useEffect(() => {
     arrivalAirportSearch();
   }, [arrivalSearch]);
-
+  useEffect(() => {
+    addProduct();
+    let getProducts = async () => {
+      await axios.get("http://localhost:5278/api/Product").then((res) => {
+        console.log(res.data);
+      });
+    };
+    getProducts();
+  }, []);
   return (
     <>
       <h1 className="logo">Book The Best</h1>

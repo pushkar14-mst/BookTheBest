@@ -96,7 +96,7 @@ app.post("/flightprice", function (req, res) {
     });
 });
 app.post("/flight-create-order", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    //let inputFlight = req.body.flightObj;
+    let inputFlight = req.body.flightObj;
     let paxDetails = req.body.paxDetails;
     yield amadeus.booking.flightOrders
         .post(JSON.stringify({
@@ -139,6 +139,12 @@ app.post("/flight-create-order", (req, res) => __awaiter(void 0, void 0, void 0,
         .then(function (response) {
         console.log(response.result);
         res.json(response.result);
+        return amadeus.booking
+            .flightOrder(response.data.id)
+            .delete()
+            .then((res) => {
+            console.log(res);
+        });
     })
         .catch(function (responseError) {
         console.log(responseError);

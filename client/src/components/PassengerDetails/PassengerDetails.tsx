@@ -2,7 +2,10 @@ import { useEffect, useState } from "react";
 import "./PassengerDetails.css";
 import axios from "axios";
 import { useSelector } from "react-redux";
+import { CircularProgress } from "@mui/material";
+
 const PassengerDetails = () => {
+  const [isLoading, setIsLoading] = useState(false);
   const flightObj = useSelector(
     (state: any) => state.flightOffers.selectedFlight
   );
@@ -24,12 +27,14 @@ const PassengerDetails = () => {
   console.log("passenger Details", paxDetails);
 
   const sendPaxDetails = async () => {
+    setIsLoading(true);
     await axios
       .post("http://localhost:8000/flight-create-order", {
         paxDetails: paxDetails,
         flightObj: flightObj,
       })
       .then((res) => {
+        setIsLoading(false);
         console.log(res.data);
       });
   };
@@ -161,9 +166,13 @@ const PassengerDetails = () => {
             />
           </div>
         </div>
-        {/* <div className="submit-paxinfo">
-          <button onClick={() => sendPaxDetails()}>Submit</button>
-        </div> */}
+
+        <div className="submit-paxinfo">
+          <button onClick={() => sendPaxDetails()}>
+            {/* {isLoading ? <CircularProgress color="inherit" /> : "Submit"} */}
+            Submit
+          </button>
+        </div>
       </section>
     </>
   );

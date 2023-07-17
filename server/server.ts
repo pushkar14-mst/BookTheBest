@@ -85,7 +85,7 @@ app.post("/flightprice", async function (req: Request, res: Response) {
 });
 
 app.post("/flight-create-order", async (req: Request, res: Response) => {
-  //let inputFlight = req.body.flightObj;
+  let inputFlight = req.body.flightObj;
   let paxDetails = req.body.paxDetails;
 
   await amadeus.booking.flightOrders
@@ -131,6 +131,12 @@ app.post("/flight-create-order", async (req: Request, res: Response) => {
     .then(function (response: any) {
       console.log(response.result);
       res.json(response.result);
+      return amadeus.booking
+        .flightOrder(response.data.id)
+        .delete()
+        .then((res) => {
+          console.log(res);
+        });
     })
     .catch(function (responseError: any) {
       console.log(responseError);
