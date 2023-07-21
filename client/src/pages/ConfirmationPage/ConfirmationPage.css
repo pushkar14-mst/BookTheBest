@@ -1,0 +1,83 @@
+.loading-view {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.confirmation-page-container {
+    display: flex;
+    margin-left: 25rem;
+    margin-right: 25rem;
+    flex-direction: column;
+
+}
+
+#pax-name {
+    font-size: 1.8rem;
+}
+
+.itinerary {
+    position: relative;
+    display: flex;
+    /* align-items: center; */
+    width: 100%;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.nth-flight {
+    display: flex;
+    width: 100%;
+    position: relative;
+    margin: 20px 0;
+}
+
+.dep-airport-info-box {
+    display: block;
+
+    /* left: 0; */
+    width: 200px;
+    height: 200px;
+}
+
+.flight-time2 {
+    position: absolute;
+    display: flex;
+    width: 55%;
+    height: 1px;
+    background-color: white;
+    left: 20%;
+    bottom: 50%;
+    justify-content: center;
+    align-items: center;
+}
+
+#duration {
+    background-color: #2b6777;
+}
+
+.arr-airport-info-box {
+    display: block;
+    position: absolute;
+    right: 0;
+    width: 200px;
+    height: 200px;
+}
+
+.layover {
+    display: flex;
+    margin-top: 10px;
+    width: inherit;
+    background-color: #52ab98;
+    justify-content: center;
+    width: max-content;
+    border-radius: 5px;
+
+}
+
+.layover p {
+    margin: 0;
+    padding: 0px 10px;
+}

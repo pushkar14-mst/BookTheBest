@@ -1,4 +1,4 @@
-import express, { Express, Request, Response } from "express";
+import express, { Express, Request, Response, response } from "express";
 // import mongoose, { Mongoose, model } from "mongoose";
 var Amadeus = require("amadeus");
 var dotenv = require("dotenv");
@@ -128,11 +128,14 @@ app.post("/flight-create-order", async (req: Request, res: Response) => {
         },
       })
     )
-    .then(function (response: any) {
-      console.log(response.result);
-      res.json(response.result);
+    .then(function (flightOrdersResponse: any) {
+      res.json(flightOrdersResponse.result.data);
+      return amadeus.booking.flightOrder(flightOrdersResponse.data.id).get();
+    })
+    .then(function (flightOrderResponse: any) {
+      // console.log(flightOrderResponse);
       return amadeus.booking
-        .flightOrder(response.data.id)
+        .flightOrder(flightOrderResponse.data.id)
         .delete()
         .then((res) => {
           console.log(res);

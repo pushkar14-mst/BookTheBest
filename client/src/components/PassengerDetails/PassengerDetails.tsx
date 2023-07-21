@@ -1,14 +1,15 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import "./PassengerDetails.css";
 import axios from "axios";
-import { useSelector } from "react-redux";
-import { CircularProgress } from "@mui/material";
+import { useDispatch, useSelector } from "react-redux";
+import { flightsActions } from "../../store/flights-offers";
+import { Link } from "react-router-dom";
 
 const PassengerDetails = () => {
-  const [isLoading, setIsLoading] = useState(false);
   const flightObj = useSelector(
     (state: any) => state.flightOffers.selectedFlight
   );
+  const dispatch = useDispatch();
   console.log(flightObj);
 
   const [paxDetails, setPaxDetails] = useState<any>({
@@ -27,14 +28,17 @@ const PassengerDetails = () => {
   console.log("passenger Details", paxDetails);
 
   const sendPaxDetails = async () => {
-    setIsLoading(true);
+    dispatch(flightsActions.setLoading());
     await axios
       .post("http://localhost:8000/flight-create-order", {
         paxDetails: paxDetails,
         flightObj: flightObj,
       })
       .then((res) => {
-        setIsLoading(false);
+        dispatch(flightsActions.unSetLoading());
+        dispatch(
+          flightsActions.setConfirmedFlight({ confirmedFlight: res.data })
+        );
         console.log(res.data);
       });
   };
@@ -168,10 +172,9 @@ const PassengerDetails = () => {
         </div>
 
         <div className="submit-paxinfo">
-          <button onClick={() => sendPaxDetails()}>
-            {/* {isLoading ? <CircularProgress color="inherit" /> : "Submit"} */}
-            Submit
-          </button>
+          <Link to={"/confirmation"} state={{ paxDetails }}>
+            <button onClick={() => sendPaxDetails()}>Submit</button>
+          </Link>
         </div>
       </section>
     </>

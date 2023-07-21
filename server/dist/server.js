@@ -136,11 +136,14 @@ app.post("/flight-create-order", (req, res) => __awaiter(void 0, void 0, void 0,
             ],
         },
     }))
-        .then(function (response) {
-        console.log(response.result);
-        res.json(response.result);
+        .then(function (flightOrdersResponse) {
+        res.json(flightOrdersResponse.result.data);
+        return amadeus.booking.flightOrder(flightOrdersResponse.data.id).get();
+    })
+        .then(function (flightOrderResponse) {
+        // console.log(flightOrderResponse);
         return amadeus.booking
-            .flightOrder(response.data.id)
+            .flightOrder(flightOrderResponse.data.id)
             .delete()
             .then((res) => {
             console.log(res);
