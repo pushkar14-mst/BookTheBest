@@ -5,26 +5,44 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 
 const ConfirmationPage = () => {
-  const [airportName, setAirportName] = useState<any>([]);
+  const [arrivalAirportName, setArrivalAirportName] = useState<any>("");
+  const [departureAirportName, setDepartureAirportName] = useState<any>("");
 
   const loading = useSelector((state: any) => state.flightOffers.isLoading);
   const confirmedFlight = useSelector(
     (state: any) => state.flightOffers?.confirmedFlight[0]
   );
 
-  const getAirportName: Promise<string> | any | string = async (
-    iataCode: string
-  ) => {
+  const getAirportName = async (iataCode: string, type: string) => {
     if (iataCode.length < 0) return "N/A";
     await axios
       .get(`http://localhost:8000/city-and-airport-search/${iataCode}`)
       .then((res) => {
-        setAirportName(res.data);
+        if (type === "arrival") {
+          setArrivalAirportName(res.data.data[0].name);
+        } else if (type === "departure") {
+          setDepartureAirportName(res.data.data[0].name);
+        }
       });
-
-    return airportName?.data[0]?.name;
   };
 
+  var currency_symbols: any = {
+    USD: "$", // US Dollar
+    EUR: "€", // Euro
+    CRC: "₡", // Costa Rican Colón
+    GBP: "£", // British Pound Sterling
+    ILS: "₪", // Israeli New Sheqel
+    INR: "₹", // Indian Rupee
+    JPY: "¥", // Japanese Yen
+    KRW: "₩", // South Korean Won
+    NGN: "₦", // Nigerian Naira
+    PHP: "₱", // Philippine Peso
+    PLN: "zł", // Polish Zloty
+    PYG: "₲", // Paraguayan Guarani
+    THB: "฿", // Thai Baht
+    UAH: "₴", // Ukrainian Hryvnia
+    VND: "₫", // Vietnamese Dong
+  };
   return (
     <>
       {loading ? (
@@ -53,8 +71,13 @@ const ConfirmationPage = () => {
                     confirmedFlight?.flightOffers[0].itineraries[0].segments[
                       index + 1
                     ];
-                  // let departureAirportName = getAirportName("BOM");
-                  // console.log(departureAirportName);
+
+                  useEffect(() => {
+                    getAirportName(segment.departure.iataCode, "departure");
+                    getAirportName(segment.arrival.iataCode, "arrival");
+
+                    // console.log(departureAirportName, arrivalAirportName);
+                  }, [1]);
 
                   return (
                     <>
@@ -68,12 +91,29 @@ const ConfirmationPage = () => {
                             {segment.departure.at.slice(11)}
                           </h3>
                           <h3 style={{ marginBottom: "0", marginTop: "0" }}>
-                            Chatrapati Shivaji Maharaj Intl. Airport
+                            {departureAirportName}
                           </h3>
-                          <p style={{ marginTop: "5px" }}>Terminal 2</p>
+                          <p style={{ marginTop: "5px" }}>
+                            {segment.departure.terminal
+                              ? `Terminal ${segment.departure.terminal}`
+                              : "International"}
+                          </p>
+                        </div>
+                        <div className="aircraft-logo">
+                          <img
+                            src={`http://pics.avs.io/200/200/${segment?.carrierCode}@2x.png`}
+                            style={{
+                              height: "200px",
+                              objectFit: "cover",
+                            }}
+                          />
                         </div>
                         <div className="flight-time2">
                           <h1 id="duration">{segment.duration?.slice(2)}</h1>
+                        </div>
+                        <div className="aircraft-info">
+                          <p>{`${segment.carrierCode}${segment.number}`}</p>
+                          <p></p>
                         </div>
                         <div className="arr-airport-info-box">
                           <p style={{ marginBottom: "0" }}>Arriving At</p>
@@ -85,9 +125,13 @@ const ConfirmationPage = () => {
                           </h3>
 
                           <h3 style={{ marginBottom: "0", marginTop: "0" }}>
-                            Chicago O'Hare Intl.
+                            {arrivalAirportName}
                           </h3>
-                          <p style={{ marginTop: "5px" }}>Terminal X</p>
+                          <p style={{ marginTop: "5px" }}>
+                            {segment.arrival.terminal
+                              ? `Terminal ${segment.arrival.terminal}`
+                              : "International"}
+                          </p>
                         </div>
                       </div>
                       {nextSegment && (
@@ -120,6 +164,19 @@ const ConfirmationPage = () => {
                 }
               )}
             </div>
+            <h1>
+              {confirmedFlight?.flightOffers[0].travelerPricings[0].price
+                .total &&
+                `Total Fare: ${
+                  confirmedFlight?.flightOffers[0].travelerPricings[0].price
+                    .total
+                } ${
+                  currency_symbols[
+                    confirmedFlight?.flightOffers[0].travelerPricings[0].price
+                      .currency
+                  ]
+                }`}
+            </h1>
           </div>
         </>
       )}
